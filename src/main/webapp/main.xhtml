@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ace="http://www.icesoft.com/icefaces/component"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta name="viewport" content="initial-scale=1.0" />
+        <meta http-equiv="Content-Type" content="text/html" />
+        <h:outputStylesheet library="css" name="style.css" />
+        <title>web3-main</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript">
+        </script>
+
+        <link rel="stylesheet" href="resources/css/style.css"/>
+
+        <img id="it-mo_logo" src="https://itmo.ru/promo/itmo-logo-dark.svg"/>
+        <h1 id="lab1">Лабораторная работа №3 Рахматов Нематджон P3233 вариант 18889898</h1>
+
+    </h:head>
+
+    <h:body>
+        <div id="allBody">
+
+            <div id = "graff">
+                <div id="calculator" style="width: 500px; height: 500px;"></div>
+                <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+                <script src="resources/js/graph.js"></script>
+                <script type="text/javascript">
+                    drawFig(5);
+                </script>
+
+                <div>
+                    <h:form>
+                        <h:commandButton id="return-to-index" value="Info Page"
+                                         action="goToPage1"/>
+                    </h:form>
+                </div>
+
+            </div>
+
+
+        <div id="bodyA">
+            <h:form>
+                <div>
+                <!-- Набор компонентов для ввода координат и радиуса -->
+                <h:outputText value="X:" />
+                <ace:spinner id="x" value="#{pointBean.x}" stepFactor="1" min="-3" max="3" />
+                </div>
+
+                <div>
+                <h:outputText value="Y:" />
+                <h:inputText value="#{pointBean.y}" id="y" validatorMessage="Введите число от -3 до 3" required="true">
+                    <f:validateDoubleRange minimum="-3" maximum="3" />
+                </h:inputText>
+                </div>
+
+                <div>
+                <h:outputText value="R:" />
+                <ace:sliderEntry id="r" value="#{pointBean.r}" minValue="1" maxValue="4" step="0.5" />
+                </div>
+
+                <div>
+                    <h:commandButton value="Send" styleClass="submit-btn">
+                        <f:ajax execute="@form" listener="#{resultBean.addResultData(resultBean.getResult(pointBean.x, pointBean.y, pointBean.r))}" render="@form results-table"/>
+                    </h:commandButton>
+                </div>
+
+                <div>
+                    <h:commandButton value="Clear Table" styleClass="clr-btn" id = "cls" class = "cls">
+                        <f:ajax execute="@form" listener="#{resultBean.delete}" render="@form results-table"/>
+                    </h:commandButton>
+                </div>
+
+                <div>
+
+                    <h:form>
+
+                    <h:dataTable id="results-table" value="#{resultBean.results}" var="result">
+                        <h:column>
+                            <f:facet name="header">id</f:facet>
+                            #{result.id}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">X</f:facet>
+                            #{result.x}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Y</f:facet>
+                            #{result.y}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">R</f:facet>
+                            #{result.r}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Результат</f:facet>
+                            #{result.result}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Время выполнения</f:facet>
+                            #{result.calculationTime}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Дата и Время</f:facet>
+                            #{result.calculatedAt}
+                        </h:column>
+
+                    </h:dataTable>
+                    </h:form>
+                </div>
+
+            </h:form>
+
+        </div>
+        </div>
+        <script src="resources/js/script.js"></script>
+        <script type="text/javascript">
+            drawFig(4);
+        </script>
+    </h:body>
+</html>
