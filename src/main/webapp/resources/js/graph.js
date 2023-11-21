@@ -11,8 +11,6 @@ const calculator = Desmos.GraphingCalculator(elt, {
     yAxisLabel: 'y',
     xAxisStep: 1,
     yAxisStep: 1,
-    xAxisArrowMode: Desmos.AxisArrowModes.POSITIVE,
-    yAxisArrowMode: Desmos.AxisArrowModes.POSITIVE
 });
 
 calculator.setMathBounds({
@@ -25,6 +23,13 @@ calculator.setMathBounds({
 let newDefaultState = calculator.getState();
 calculator.setDefaultState(newDefaultState);
 
+function drawFig(R){
+    calculator.setExpression({ id: 'triangle', latex: `\\polygon((0, ${R}), (${R}, 0), (0, 0))`, color: Desmos.Colors.RED, opacity: 0.3});
+    calculator.setExpression({ id: 'rectangle', latex: `\\polygon((${-R}, 0), (${-R}, ${R/2}), (0, ${R/2}), (0, 0))`, color: Desmos.Colors.RED, opacity: 0.3});
+    //calculator.setExpression({id: 'circle', latex: `r<=${R/2}`, color: Desmos.Colors.RED});
+    calculator.setExpression({id: 'circle2', latex: `x^{2}+y^{2}\\ <=\\left(\\frac{${R}}{2}\\right)^{2}\\ \\left\\{y\\ <0\\right\\}\\left\\{x>0\\right\\}`, color: Desmos.Colors.RED});
+}
+
 function drawPointXY(x, y) {
     calculator.setExpression({
         id: x + '' + y,
@@ -32,37 +37,3 @@ function drawPointXY(x, y) {
         color: Desmos.Colors.RED
     });
 }
-function drawPoint(x, y, r) {
-    calculator.setExpression({
-        id: x + '' + y,
-        latex: '(' + x + ', ' + y + ')',
-        color: Desmos.Colors.RED
-    });
-    drawFig(r);
-}
-
-
-function drawFig(R){
-    calculator.setExpression({ id: 'triangle', latex: `\\polygon((0, ${R}), (${R}, 0), (0, 0))`, color: Desmos.Colors.RED, opacity: 0.3});
-    calculator.setExpression({ id: 'rectangle', latex: `\\polygon((${-R}, 0), (${-R}, ${R/2}), (0, ${R/2}), (0, 0))`, color: Desmos.Colors.RED, opacity: 0.3});
-    calculator.setExpression({id: 'circle', latex: `r<=\\frac{${R}}{2} \\{-\\frac{\\pi}{2} \\leq \\theta \\leq 0\\}`, color: Desmos.Colors.RED});
-}
-
-function drawPointXYRes(x, y, result) {calculator.setExpression({
-    id: x + '' + y,
-    latex: '(' + x + ', ' + y + ')',
-    color: result ? Desmos.Colors.PURPLE : Desmos.Colors.BLUE
-});
-}
-
-function inRectangle(point, rect) {
-    return (
-        point.x >= rect.left &&
-        point.x <= rect.right &&
-        point.y <= rect.top &&
-        point.y >= rect.bottom
-    )
-}
-
-
-

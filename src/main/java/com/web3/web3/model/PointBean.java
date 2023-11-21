@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class PointBean implements Serializable{
     private double x;
     private double y;
-    private double r;
+    private double r = 1;
     private boolean result;
     private long calculationTime;
     private LocalDateTime calculatedAt;
@@ -43,7 +43,7 @@ public class PointBean implements Serializable{
     }
 
     public void checkPoint() {
-        this.result = true;
+        this.result = AreaResultChecker.getResult(x,y,r);
         ResultDataBean nRes = new ResultDataBean();
         nRes.setR(r);
         nRes.setX(x);

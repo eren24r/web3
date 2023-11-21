@@ -6,6 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ace="http://www.icesoft.com/icefaces/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
@@ -15,9 +16,6 @@
         <meta http-equiv="Content-Type" content="text/html" />
         <h:outputStylesheet library="css" name="style.css" />
         <title>web3-main</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript">
-        </script>
-
         <link rel="stylesheet" href="resources/css/style.css"/>
 
         <img id="it-mo_logo" src="https://itmo.ru/promo/itmo-logo-dark.svg"/>
@@ -30,13 +28,12 @@
 
             <div id = "graff">
                 <div id="calculator" style="width: 500px; height: 500px;"></div>
-                <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+                <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"/>
 
-                <script src="resources/js/graph.js"></script>
+                <script src="resources/js/graph.js"/>
                 <script type="text/javascript">
-                    drawFig(5);
+                    drawFig(#{pointBean.r});
                 </script>
-
                 <div>
                     <h:form>
                         <h:commandButton id="return-to-index" value="Info Page"
@@ -48,23 +45,51 @@
 
 
         <div id="bodyA">
-            <h:form>
+            <h:form id = "ker">
                 <div>
                 <!-- Набор компонентов для ввода координат и радиуса -->
                 <h:outputText value="X:" />
-                <ace:spinner id="x" value="#{pointBean.x}" stepFactor="1" min="-3" max="3" />
+                <p:spinner id="x" value="#{pointBean.x}" stepFactor="1" min="-3" max="3" onchange="hand()"/>
                 </div>
 
                 <div>
                 <h:outputText value="Y:" />
-                <h:inputText value="#{pointBean.y}" id="y" validatorMessage="Введите число от -3 до 3" required="true">
+                <h:inputText value="#{pointBean.y}" maxlength="6" id="y" validatorMessage="Введите число от -3 до 3" required="true" onchange="hand()">
                     <f:validateDoubleRange minimum="-3" maximum="3" />
                 </h:inputText>
                 </div>
 
+                <script type="text/javascript">
+                    function hand() {
+                        const x = document.getElementById('ker:x_input').value;
+                        const yy = document.getElementById('ker:y').value;
+                        const yyy = yy.replace(',', '.');
+                        const y = parseFloat(yyy);
+
+                        if (isNaN(x) || isNaN(y)) {
+                        } else {
+                            calculator.removeExpressions(calculator.getExpressions({type: 'point'}));
+                            handleSliderValue();
+                            drawPointXY(x, y);
+                        }
+                    }
+                </script>
+
                 <div>
-                <h:outputText value="R:" />
-                <ace:sliderEntry id="r" value="#{pointBean.r}" minValue="1" maxValue="4" step="0.5" />
+                    <h:outputText id="output" value="R: #{pointBean.r}"/>
+                    <h:inputHidden id = "txt" value="#{pointBean.r}" />
+                    <p:slider for = "txt" id="r" value="#{pointBean.r}"
+                              minValue="1" maxValue="4" step="0.5" display="output" style="width: 200px"
+                              displayTemplate="R: {value}" onSlideEnd="handleSliderValue()"/>
+                    <script>
+                        function handleSliderValue() {
+                            // Ваш JavaScript-код с аргументом sliderValue
+                            var ker = document.getElementById('ker:txt');
+                            drawFig(ker.value);
+                            // Здесь можно выполнить другие операции с полученным значением
+                        }
+                    </script>
+
                 </div>
 
                 <div>
@@ -123,9 +148,6 @@
 
         </div>
         </div>
-        <script src="resources/js/script.js"></script>
-        <script type="text/javascript">
-            drawFig(4);
-        </script>
     </h:body>
+    <script src="resources/js/js.js"/>
 </html>

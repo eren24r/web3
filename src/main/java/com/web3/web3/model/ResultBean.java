@@ -1,17 +1,14 @@
 package com.web3.web3.model;
 
-import com.web3.web3.db.DAOFactory;
 import jakarta.annotation.ManagedBean;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import jakarta.annotation.PostConstruct;
+
 import jakarta.transaction.Transactional;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,8 +45,7 @@ public class ResultBean implements Serializable {
         s.setY(y);
         s.setX(x);
         PointBean cnt = new PointBean();
-        /*resTochka*/
-        s.setResult(true);
+        s.setResult(AreaResultChecker.getResult(x, y, r));
 
         return s;
     }
@@ -95,6 +91,11 @@ public class ResultBean implements Serializable {
             em.getTransaction().begin();
             em.persist(res);
             em.getTransaction().commit();
+            /*
+
+            this.results = retrieveDataFromDatabase(em);
+*/
+            em.close();
 
         }
 
