@@ -7,7 +7,7 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@ManagedBean
+/*@ManagedBean*/
 @SessionScoped
 @Named
 public class PointBean implements Serializable{
